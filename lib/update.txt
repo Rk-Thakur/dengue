@@ -1,0 +1,1 @@
+get the customer image either single by single or multiple 

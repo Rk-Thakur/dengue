@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1047687209913",
+    "project_id": "dengue-668ea",
+    "storage_bucket": "dengue-668ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047687209913:android:efe54677be80019512cc68",
+        "android_client_info": {
+          "package_name": "com.example.dengue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047687209913-486lg48koi16e69kj432rm3fes11pb7a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdFoHSCMsxszyArWn1yI1p823HeGaQthA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047687209913-486lg48koi16e69kj432rm3fes11pb7a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
