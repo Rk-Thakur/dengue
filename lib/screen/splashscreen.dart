@@ -1,4 +1,5 @@
 import 'package:dengue/screen/login.dart';
+import 'package:dengue/screen/statuscheck.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -12,17 +13,9 @@ class _splashScreenState extends State<splashScreen> {
   void initState() {
     Future.delayed(Duration(seconds: 5), () {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return login_screen();
+        return StatusCheck();
       }));
-      // Navigator.push(
-      //     context,
-      //     PageTransition(
-      //         child: login_screen(),
-      //         type: PageTransitionType.leftToRightJoined,
-      //         duration: Duration(seconds: 5)));
     });
-    // Get.to(() => login_screen(),
-    //     duration: Duration(seconds: 5), transition: Transition.fadeIn);
   }
 
   @override

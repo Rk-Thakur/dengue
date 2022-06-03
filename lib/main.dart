@@ -1,30 +1,17 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:dengue/screen/faq.dart';
-import 'package:dengue/screen/main_screen.dart';
 import 'package:dengue/screen/splashscreen.dart';
+import 'package:dengue/screen/statuscheck.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// void main() {
-//   runApp(ProviderScope(child: myapp()));
-// }
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-// class myapp extends StatelessWidget {
-//   const myapp({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetMaterialApp(
-//       theme: ThemeData(primaryColor: Color(0xffE26A2C)),
-//       debugShowCheckedModeBanner: false,
-//       home: splashScreen(),
-//     );
-//   }
-// }
-
-void main() {
+  await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.black,
   ));
@@ -46,8 +33,6 @@ void main() {
 }
 
 class myapp extends StatelessWidget {
-  const myapp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

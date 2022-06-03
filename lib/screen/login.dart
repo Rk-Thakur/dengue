@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dengue/provider/authprovider.dart';
 import 'package:dengue/provider/image_provider.dart';
 import 'package:dengue/provider/loginprovider.dart';
 import 'package:dengue/screen/forgetpassword.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:lottie/lottie.dart';
 
 class login_screen extends StatelessWidget {
@@ -30,7 +32,6 @@ class login_screen extends StatelessWidget {
           final isLoading = ref.watch(loadingProvider);
           return SingleChildScrollView(
             child: Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               key: _form,
               child: Padding(
                 padding:
@@ -241,40 +242,36 @@ class login_screen extends StatelessWidget {
                                   MaterialStateProperty.all(Color(0xffE26A2C))),
                           onPressed: () async {
                             _form.currentState!.save();
-                            ref.read(loadingProvider.notifier).toogle();
+                            // ref.read(loadingProvider.notifier).toogle();
                             FocusScope.of(context).unfocus();
                             _form.currentState!.validate();
-                            // if (isLogin) {
-                            //   final response = ref
-                            //       .read(logSignProvider)
-                            //       .Login(
-                            //           email:
-                            //               customermailController.text.trim(),
-                            //           password:
-                            //               customerpassController.text.trim());
-                            //   if (response != 'success') {
-                            //     ref.read(loadingProvider.notifier).toogle();
-                            //     Get.showSnackbar(GetSnackBar(
-                            //       title: 'Got some error',
-                            //       duration: Duration(seconds: 1),
-                            //       message: 'Please Confirm Your Id Password',
-                            //     ));
-                            //   }
-                            // } else {
-                            //   if (db.image == null) {
-                            //     Get.defaultDialog(
-                            //         title: 'Please Provide a Image',
-                            //         content: Text('Image must be Select'));
-                            //   } else {
-                            //     ref.read(logSignProvider).signUp(
-                            //         customerName:
-                            //             customerNameController.text.trim(),
-                            //         email: customermailController.text.trim(),
-                            //         password:
-                            //             customerpassController.text.trim(),
-                            //         image: db.image!);
-                            //   }
-                            // }
+                            if (isLogin) {
+                              final response = ref
+                                  .read(loginsignProvider)
+                                  .Login(
+                                      email: mailController.text.trim(),
+                                      password: passController.text.trim());
+                              if (response != 'success') {
+                                ref.read(loadingProvider.notifier).toogle();
+                                Get.showSnackbar(GetSnackBar(
+                                  title: 'Got some error',
+                                  duration: Duration(seconds: 1),
+                                  message: 'Please Confirm Your Id Password',
+                                ));
+                              }
+                            } else {
+                              if (db.image == null) {
+                                Get.defaultDialog(
+                                    title: 'Please Provide a Image',
+                                    content: Text('Image must be Select'));
+                              } else {
+                                ref.read(loginsignProvider).signUp(
+                                    email: mailController.text.trim(),
+                                    password: passController.text.trim(),
+                                    userName: userNameController.text.trim(),
+                                    image: db.image!);
+                              }
+                            }
                           },
                           child: isLoading
                               ? Row(
@@ -338,10 +335,7 @@ class login_screen extends StatelessWidget {
                           ),
                           child: SignInButton(
                             Buttons.Google,
-                            onPressed: () {
-                              Get.to(() => main_Screen(),
-                                  transition: Transition.downToUp);
-                            },
+                            onPressed: () {},
                           ),
                         ),
                       ),
