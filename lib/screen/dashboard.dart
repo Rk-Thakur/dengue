@@ -1,3 +1,5 @@
+import 'package:dengue/screen/addfaq.dart';
+import 'package:dengue/screen/addpost.dart';
 import 'package:dengue/screen/faq.dart';
 import 'package:dengue/screen/symptoms_screen.dart';
 import 'package:flutter/material.dart';
@@ -56,26 +58,43 @@ class _dashboardState extends State<dashboard> {
                           padding: const EdgeInsets.all(5.0),
                           child: Row(
                             children: [
-                              Card(
-                                elevation: 5,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: SizedBox.fromSize(
-                                    child:
-                                        Image.asset('assets/images/login.png'),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    Get.to(() => AddPost(),
+                                        transition:
+                                            Transition.leftToRightWithFade);
+                                  });
+                                },
+                                child: Card(
+                                  elevation: 5,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: SizedBox.fromSize(
+                                      child: Image.asset(
+                                          'assets/images/login.png'),
+                                    ),
                                   ),
                                 ),
                               ),
                               SizedBox(
                                 width: 8,
                               ),
-                              Card(
-                                elevation: 5,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: SizedBox.fromSize(
-                                    child:
-                                        Image.asset('assets/images/login.png'),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    Get.to(() => AddFaq(),
+                                        transition: Transition.downToUp);
+                                  });
+                                },
+                                child: Card(
+                                  elevation: 5,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: SizedBox.fromSize(
+                                      child: Image.asset(
+                                          'assets/images/forgot.png'),
+                                    ),
                                   ),
                                 ),
                               ),
