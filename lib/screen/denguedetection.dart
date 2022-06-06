@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dengue/provider/crudprovider.dart';
 import 'package:dengue/provider/image_provider.dart';
 import 'package:dengue/provider/loginprovider.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class denguedetection extends StatefulWidget {
 }
 
 class denguedetectionState extends State<denguedetection> {
+  TextEditingController descriptionController = TextEditingController();
   Completer<GoogleMapController> _controller = Completer();
 
   Set<Marker> marker = {};
@@ -314,7 +316,14 @@ class denguedetectionState extends State<denguedetection> {
                       padding: const EdgeInsets.only(
                           top: 15, left: 15, bottom: 0, right: 15),
                       child: TextFormField(
-                        maxLines: 8,
+                        controller: descriptionController,
+                        maxLines: 10,
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return "Description is Required";
+                          }
+                          return null;
+                        },
                         decoration: InputDecoration(
                           hintText: 'Description',
                           contentPadding:
@@ -349,7 +358,25 @@ class denguedetectionState extends State<denguedetection> {
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                     Color(0xffE26A2C))),
-                            onPressed: () {},
+                            onPressed: () async {
+                              _form.currentState!.save();
+                              FocusScope.of(context).unfocus();
+                              if (_form.currentState!.validate()) {
+                                final response = ref
+                                    .watch(crudProvider)
+                                    .addDetectionArea(
+                                        lat: widget.lat,
+                                        long: widget.long,
+                                        image1: db.image!,
+                                        image2: db.image1!,
+                                        image3: db.image2!,
+                                        description:
+                                            descriptionController.text.trim());
+                                if (response == 'success') {
+                                  Navigator.pop(context);
+                                }
+                              }
+                            },
                             child: Text(
                               "Submit",
                               style: TextStyle(

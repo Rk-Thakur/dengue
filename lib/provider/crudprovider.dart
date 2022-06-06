@@ -12,7 +12,8 @@ final crudProvider = Provider.autoDispose((ref) => CrudProvider());
 class CrudProvider {
   CollectionReference dbpost = FirebaseFirestore.instance.collection('post');
   CollectionReference dbfaq = FirebaseFirestore.instance.collection('faq');
-
+  CollectionReference dbdetection =
+      FirebaseFirestore.instance.collection('denguedetection');
 //post section
   Future<String> addpost({
     required XFile image,
@@ -81,5 +82,48 @@ class CrudProvider {
           question: json['question'] ?? 'not null',
           answer: json['answer'] ?? 'not null');
     }).toList();
+  }
+
+  //detection section
+  Future<String> addDetectionArea(
+      {required double lat,
+      required double long,
+      required XFile image1,
+      required XFile image2,
+      required XFile image3,
+      required String description}) async {
+    try {
+      final imageId = DateTime.now().toString();
+      final detectionId = DateTime.now().toString();
+      final ref =
+          FirebaseStorage.instance.ref().child('detectionImage/$imageId');
+      final ref1 =
+          FirebaseStorage.instance.ref().child('detectionImage/$imageId');
+      final ref2 =
+          FirebaseStorage.instance.ref().child('detectionImage/$imageId');
+      final image1file = File(image1.path);
+      final image2file = File(image2.path);
+      final image3file = File(image3.path);
+      await ref.putFile(image1file);
+      await ref1.putFile(image2file);
+      await ref2.putFile(image3file);
+
+      final url = await ref.getDownloadURL();
+      final url1 = await ref1.getDownloadURL();
+      final url2 = await ref2.getDownloadURL();
+      await dbdetection.add({
+        'lat': lat,
+        'long': long,
+        'image1': url,
+        'image2': url1,
+        'image3': url2,
+        'description': description,
+        'detectionId': detectionId
+      });
+      return 'success';
+    } on FirebaseException catch (e) {
+      print(e);
+      return '${e.message}';
+    }
   }
 }
