@@ -10,6 +10,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 
 class denguedetection extends StatefulWidget {
   late double lat;
@@ -49,6 +51,7 @@ class denguedetectionState extends State<denguedetection> {
       zoom: 19.151926040649414);
   LocationPermission? locationPermission;
   final _form = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -136,7 +139,7 @@ class denguedetectionState extends State<denguedetection> {
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                          "Images",
+                          "Video",
                           style: TextStyle(
                             fontSize: 20,
                             letterSpacing: 2,
@@ -150,150 +153,48 @@ class denguedetectionState extends State<denguedetection> {
                           top: 15, left: 15, bottom: 0, right: 15),
                       child: Container(
                         width: double.infinity,
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  ref.read(imageProvider).getImage();
-                                });
-                              },
-                              child: Container(
-                                width: 106,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: Color(0xffe26a2c),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: db.image == null
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            FaIcon(
-                                              FontAwesomeIcons.image,
-                                              size: 35,
-                                              color: Colors.grey,
-                                            ),
-                                            Text(
-                                              "Select Image",
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                height: 2,
-                                                color: Colors.grey,
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      : Image.file(
-                                          File(db.image!.path),
-                                          fit: BoxFit.cover,
-                                          width: 120,
-                                          height: 106,
-                                        ),
-                                ),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              ref.read(imageProvider).getImage();
+                            });
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 300,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Color(0xffe26a2c),
                               ),
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  ref.read(imageProvider).getImage1();
-                                });
-                              },
-                              child: Container(
-                                width: 106,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: Color(0xffe26a2c),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: db.image1 == null
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            FaIcon(
-                                              FontAwesomeIcons.image,
-                                              size: 35,
-                                              color: Colors.grey,
-                                            ),
-                                            Text(
-                                              "Select Image",
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                height: 2,
-                                                color: Colors.grey,
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      : Image.file(
-                                          File(db.image1!.path),
-                                          fit: BoxFit.cover,
-                                          width: 120,
-                                          height: 106,
+                            child: db.video == null
+                                ? Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.image,
+                                          size: 35,
+                                          color: Colors.grey,
                                         ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  ref.read(imageProvider).getImage2();
-                                });
-                              },
-                              child: Container(
-                                width: 106,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: Color(0xffe26a2c),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: db.image2 == null
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            FaIcon(
-                                              FontAwesomeIcons.image,
-                                              size: 35,
-                                              color: Colors.grey,
-                                            ),
-                                            Text(
-                                              "Select Image",
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                height: 2,
-                                                color: Colors.grey,
-                                              ),
-                                            )
-                                          ],
+                                        Text(
+                                          "Select Images",
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            height: 2,
+                                            color: Colors.grey,
+                                          ),
                                         )
-                                      : Image.file(
-                                          File(db.image2!.path),
-                                          fit: BoxFit.cover,
-                                          width: 120,
-                                          height: 106,
-                                        ),
-                                ),
-                              ),
-                            ),
-                          ],
+                                      ],
+                                    ),
+                                  )
+                                : Image.file(
+                                    File(db.image!.path),
+                                    fit: BoxFit.fill,
+                                  ),
+                          ),
                         ),
                       ),
                     ),
@@ -359,23 +260,23 @@ class denguedetectionState extends State<denguedetection> {
                                 backgroundColor: MaterialStateProperty.all(
                                     Color(0xffE26A2C))),
                             onPressed: () async {
-                              _form.currentState!.save();
-                              FocusScope.of(context).unfocus();
-                              if (_form.currentState!.validate()) {
-                                final response = ref
-                                    .watch(crudProvider)
-                                    .addDetectionArea(
-                                        lat: widget.lat,
-                                        long: widget.long,
-                                        image1: db.image!,
-                                        image2: db.image1!,
-                                        image3: db.image2!,
-                                        description:
-                                            descriptionController.text.trim());
-                                if (response == 'success') {
-                                  Navigator.pop(context);
-                                }
-                              }
+                              // _form.currentState!.save();
+                              // FocusScope.of(context).unfocus();
+                              // if (_form.currentState!.validate()) {
+                              //   final response = ref
+                              //       .watch(crudProvider)
+                              //       .addDetectionArea(
+                              //           lat: widget.lat,
+                              //           long: widget.long,
+                              //           image1: db.image!,
+                              //           image2: db.image1!,
+                              //           image3: db.image2!,
+                              //           description:
+                              //               descriptionController.text.trim());
+                              //   if (response == 'success') {
+                              //     Navigator.pop(context);
+                              //   }
+                              // }
                             },
                             child: Text(
                               "Submit",
