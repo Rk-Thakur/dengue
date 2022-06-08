@@ -168,7 +168,7 @@ class denguedetectionState extends State<denguedetection> {
                                 color: Color(0xffe26a2c),
                               ),
                             ),
-                            child: db.video == null
+                            child: db.image == null
                                 ? Center(
                                     child: Column(
                                       mainAxisAlignment:

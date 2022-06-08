@@ -1,6 +1,7 @@
 import 'package:dengue/screen/addfaq.dart';
 import 'package:dengue/screen/addpost.dart';
 import 'package:dengue/screen/faq.dart';
+import 'package:dengue/screen/pickvideo.dart';
 import 'package:dengue/screen/symptoms_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -101,13 +102,16 @@ class _dashboardState extends State<dashboard> {
                               SizedBox(
                                 width: 8,
                               ),
-                              Card(
-                                elevation: 5,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: SizedBox.fromSize(
-                                    child:
-                                        Image.asset('assets/images/login.png'),
+                              InkWell(
+                                onTap: () {},
+                                child: Card(
+                                  elevation: 5,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: SizedBox.fromSize(
+                                      child: Image.asset(
+                                          'assets/images/login.png'),
+                                    ),
                                   ),
                                 ),
                               ),
