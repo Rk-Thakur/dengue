@@ -1,1 +1,4 @@
-get the customer image either single by single or multiple 
+
+Need To Do;
+    1. get the customer image either single by single or multiple 
+    2. Customize the logo of the maps and also the size

@@ -35,11 +35,28 @@ class denguedetectionState extends State<denguedetection> {
     zoom: 14.4746,
   );
 
+  //for customize of the map
+  BitmapDescriptor? mapMarker;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setCustomMarker();
+  }
+
+//customize the map logo and size
+  void setCustomMarker() async {
+    mapMarker = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(10, 10)), 'assets/images/login.png');
+  }
+
   void _onMapCreate(GoogleMapController controller) {
     setState(() {
       marker.add(Marker(
           position: LatLng(widget.lat, widget.long),
-          infoWindow: InfoWindow(title: 'Home', snippet: 'Dengue Detected!!!'),
+          icon: mapMarker!,
+          infoWindow:
+              InfoWindow(title: 'Mosquito', snippet: 'Dengue Detected???'),
           markerId: MarkerId('id_1')));
     });
   }

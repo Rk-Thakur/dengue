@@ -19,6 +19,10 @@ class ImageProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getmultipleImage() async {
+    final ImagePicker _picker = ImagePicker();
+  }
+
   Future<void> getVideo() async {
     final ImagePicker _picker = ImagePicker();
     video = await _picker.pickVideo(source: ImageSource.gallery);
