@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:dengue/provider/crudprovider.dart';
 import 'package:dengue/provider/image_provider.dart';
 import 'package:dengue/provider/loginprovider.dart';
-import 'package:dengue/screen/allevent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
 
-class AddPost extends StatelessWidget {
-  final eventDescription = TextEditingController();
+class Alarm extends StatelessWidget {
+  final alarmDescription = TextEditingController();
+  final alarmtime = TextEditingController();
   final _form = GlobalKey<FormState>();
 
   @override
@@ -28,9 +28,8 @@ class AddPost extends StatelessWidget {
               child: Column(
                 children: [
                   Card(
-                    elevation: .6,
                     child: Lottie.asset(
-                      'assets/images/community.json',
+                      'assets/images/alarm.json',
                       height: 200,
                       width: double.infinity,
                       fit: BoxFit.contain,
@@ -45,26 +44,20 @@ class AddPost extends StatelessWidget {
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Events & Campaign',
+                            'Alarm',
                             style: TextStyle(
                               fontSize: 20,
-                              letterSpacing: 1,
+                              letterSpacing: 2,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Get.to(() => AllEvent(),
-                                transition: Transition.leftToRightWithFade);
-                          },
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: Icon(
-                              Icons.arrow_right,
-                              size: 25,
-                              color: Color(0xffe26a2c),
-                            ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Icon(
+                            Icons.arrow_right,
+                            size: 25,
+                            color: Color(0xffe26a2c),
                           ),
                         ),
                       ],
@@ -114,7 +107,27 @@ class AddPost extends StatelessWidget {
                     height: 20,
                   ),
                   TextFormField(
-                    controller: eventDescription,
+                    controller: alarmtime,
+                    keyboardType: TextInputType.number,
+                    validator: (val) {
+                      if (val!.isEmpty) {
+                        return 'Time is   required';
+                      }
+
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        labelText: 'More than half a day',
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                        hintText: 'Alarm Time ',
+                        border: OutlineInputBorder()),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: alarmDescription,
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
                     minLines: 1,
@@ -127,63 +140,77 @@ class AddPost extends StatelessWidget {
                       return null;
                     },
                     decoration: InputDecoration(
+                        labelText: 'Description',
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                         hintText: 'Description',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20))),
+                        border: OutlineInputBorder()),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.09,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xffe26a2c),
-                      ),
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Color(0xffe26a2c))),
-                          onPressed: () async {
-                            _form.currentState!.save();
-                            FocusScope.of(context).unfocus();
-                            _form.currentState!.validate();
-                            if (db.image == null) {
-                              Get.dialog(AlertDialog(
-                                title:
-                                    Text("Please Provide the quality images"),
-                                actions: [
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    icon: Icon(Icons.close),
-                                  )
-                                ],
-                              ));
-                            } else {
-                              final response = await ref
-                                  .read(crudProvider)
-                                  .addpost(
-                                    image: db.image!,
-                                    description: eventDescription.text.trim(),
-                                  );
-                              if (response == 'success') {
-                                Navigator.pop(context);
-                              }
-                            }
-                          },
-                          child: Text(
-                            "Add",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.5,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.09,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffe26a2c),
+                    ),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Color(0xffe26a2c))),
+                      onPressed: () async {
+                        _form.currentState!.save();
+                        FocusScope.of(context).unfocus();
+                        _form.currentState!.validate();
+                        if (db.image == null) {
+                          Get.dialog(AlertDialog(
+                            title: Text("Please Provide the quality images"),
+                            actions: [
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                icon: Icon(Icons.close),
+                              )
+                            ],
+                          ));
+                        } else {
+                          final response = await ref
+                              .read(crudProvider)
+                              .addalarm(
+                                  image: db.image!,
+                                  time: int.parse(alarmtime.text),
+                                  details: alarmDescription.text.trim());
+                          if (response == 'success') {
+                            Navigator.of(context).pop();
+                          }
+                        }
+                      },
+                      child: isLoading
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Is Loading Please Wait!!',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ],
+                            )
+                          : Text(
+                              "Add Alarm",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.5,
+                              ),
                             ),
-                          ))),
+                    ),
+                  ),
                 ],
               ),
             )),

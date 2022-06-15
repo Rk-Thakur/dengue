@@ -2,18 +2,93 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dengue/model/faq.dart';
+import 'package:dengue/model/hospital.dart';
 import 'package:dengue/model/post.dart';
+import 'package:dengue/screen/hospital.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 final crudProvider = Provider.autoDispose((ref) => CrudProvider());
+final hospitalProvider =
+    StreamProvider.autoDispose((ref) => CrudProvider().getHospital());
+final postProvider = StreamProvider((ref) => CrudProvider().getData());
 
 class CrudProvider {
   CollectionReference dbpost = FirebaseFirestore.instance.collection('post');
   CollectionReference dbfaq = FirebaseFirestore.instance.collection('faq');
   CollectionReference dbdetection =
       FirebaseFirestore.instance.collection('denguedetection');
+  CollectionReference dbhospital =
+      FirebaseFirestore.instance.collection('hospital');
+  CollectionReference dbAlarm = FirebaseFirestore.instance.collection('Alarm');
+
+  //hospital section
+  Future<String> addhospitaldetails(
+      {required String name, required int number}) async {
+    try {
+      final hospitaldetailsid = DateTime.now().toString();
+      await dbhospital.add({
+        'hospitalname': name,
+        'hospitalnumber': '+977${number}',
+        'hospitaldetailsid': hospitaldetailsid
+      });
+      return 'success';
+    } on FirebaseException catch (e) {
+      print("${e}");
+      return 'not success';
+    }
+  }
+
+  Stream<List<Hospitaldetail>> getHospital() {
+    return dbhospital.snapshots().map((event) => getHospitaldata(event));
+  }
+
+  List<Hospitaldetail> getHospitaldata(QuerySnapshot querySnapshot) {
+    return querySnapshot.docs.map((doc) {
+      final json = doc.data() as Map<String, dynamic>;
+      return Hospitaldetail(
+          hospital_id: json['hospitaldetailsid'] ?? 'Not Available',
+          hospital_name: json['name'] ?? 'Not Available',
+          hospital_number: json['number'] ?? 'Not Available');
+    }).toList();
+  }
+
+  Future<String> hospitaldetailRemove({required String hospital_id}) async {
+    try {
+      await dbhospital.doc(hospital_id).delete();
+      return 'success';
+    } on FirebaseException catch (e) {
+      print(e);
+      return '${e.message}';
+    }
+  }
+
+//alarm section
+  Future<String> addalarm(
+      {required XFile image,
+      required int time,
+      required String details}) async {
+    try {
+      final imageId = DateTime.now().toString();
+      final alarmId = DateTime.now().toString();
+      final ref = FirebaseStorage.instance.ref().child('postAlarm/ $imageId');
+      final imageFile = File(image.path);
+      await ref.putFile(imageFile);
+      final url = await ref.getDownloadURL();
+      await dbAlarm.add({
+        'notification_image': url,
+        'notification_time': time,
+        'notification_id': alarmId,
+        'notification_detail': details
+      });
+      return 'success';
+    } on FirebaseException catch (e) {
+      print(e);
+      return "${e.message}";
+    }
+  }
+
 //post section
   Future<String> addpost({
     required XFile image,
@@ -31,6 +106,7 @@ class CrudProvider {
         'description': description,
         'image': url,
         'postId': postId,
+        'imageid': imageId,
       });
       return 'success';
     } on FirebaseException catch (e) {
@@ -51,6 +127,18 @@ class CrudProvider {
           description: json['description'] ?? 'not null',
           postImage: json['image'] ?? 'not null');
     }).toList();
+  }
+
+  Future<String> postRemove(
+      {required String postId, required String imageid}) async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child('postImage/$imageid');
+      await ref.delete();
+      await dbpost.doc(postId).delete();
+      return 'Success';
+    } on FirebaseException catch (e) {
+      return '${e.message}';
+    }
   }
 
   //faq section
@@ -82,6 +170,15 @@ class CrudProvider {
           question: json['question'] ?? 'not null',
           answer: json['answer'] ?? 'not null');
     }).toList();
+  }
+
+  Future<String> faqRemove({required String faqId}) async {
+    try {
+      await dbfaq.doc(faqId).delete();
+      return 'success';
+    } on FirebaseException catch (e) {
+      return "${e.message}";
+    }
   }
 
   //detection section

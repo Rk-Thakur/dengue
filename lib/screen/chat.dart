@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dengue/provider/authprovider.dart';
 import 'package:dengue/provider/loginprovider.dart';
+import 'package:dengue/screen/admin.dart';
 import 'package:dengue/screen/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,6 +76,50 @@ class _SeettingState extends State<Seetting> {
                             ),
                             child: Column(
                               children: [
+                                data.userId == 'pvdbT2Qob3VaoxUg8hfp23Lz8X32'
+                                    ? InkWell(
+                                        onTap: () => setState(() {
+                                          Get.to(() => admin(),
+                                              transition: Transition.fadeIn);
+                                        }),
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xfffda65d),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons
+                                                      .admin_panel_settings_sharp,
+                                                  size: 28,
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  "Admin DashBoard",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 10,
+                                      ),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Container(
                                   width: double.infinity,
                                   height: 55,
@@ -219,7 +264,7 @@ void notify() async {
         body: 'Did u clean ur place??',
       ),
       schedule: NotificationInterval(
-        interval: 5,
+        interval: 5, //second
         timeZone: timezon,
       )); //repeats:true time interval must be at least 60 if repeating
 }

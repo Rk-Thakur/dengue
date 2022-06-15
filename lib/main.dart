@@ -30,12 +30,17 @@ void main() async {
   ]);
 
   runApp(ProviderScope(child: myapp()));
+  //for the preview viewer
+  // runApp(DevicePreview(builder: (context) => ProviderScope(child: myapp())));
 }
 
 class myapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      // useInheritedMediaQuery: true,
+      // locale: DevicePreview.locale(context),
+      // builder: DevicePreview.appBuilder,
       // theme: ThemeData(primaryColor: Color(0xffE26A2C)),
       darkTheme: ThemeData(
         brightness: Brightness.dark,

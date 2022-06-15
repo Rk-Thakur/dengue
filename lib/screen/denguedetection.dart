@@ -11,7 +11,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_player/video_player.dart';
 
 class denguedetection extends StatefulWidget {
   late double lat;
@@ -41,20 +40,20 @@ class denguedetectionState extends State<denguedetection> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    setCustomMarker();
+    // setCustomMarker();
   }
 
 //customize the map logo and size
-  void setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(10, 10)), 'assets/images/login.png');
-  }
+  // void setCustomMarker() async {
+  //   mapMarker = await BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration(size: Size(10, 10)), 'assets/images/login.png');
+  // }
 
   void _onMapCreate(GoogleMapController controller) {
     setState(() {
       marker.add(Marker(
           position: LatLng(widget.lat, widget.long),
-          icon: mapMarker!,
+          // icon: mapMarker!,
           infoWindow:
               InfoWindow(title: 'Mosquito', snippet: 'Dengue Detected???'),
           markerId: MarkerId('id_1')));
