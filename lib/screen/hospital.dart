@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:dengue/provider/crudprovider.dart';
-import 'package:dengue/provider/image_provider.dart';
 import 'package:dengue/provider/loginprovider.dart';
 import 'package:dengue/screen/allhospital.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:phonenumbers/phonenumbers.dart';
 
 class Hospital extends StatelessWidget {
   final hospitalnumber = TextEditingController();
@@ -55,10 +50,10 @@ class Hospital extends StatelessWidget {
                           ),
                         ),
                         InkWell(
-                          onTap: () {
-                            Get.to(() => AllHospital(),
-                                transition: Transition.leftToRight);
-                          },
+                          // onTap: () {
+                          //   Get.to(() => AllHospital(),
+                          //       transition: Transition.leftToRight);
+                          // },
                           child: Align(
                             alignment: Alignment.bottomRight,
                             child: Icon(

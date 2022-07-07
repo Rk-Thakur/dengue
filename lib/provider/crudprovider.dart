@@ -30,7 +30,7 @@ class CrudProvider {
       final hospitaldetailsid = DateTime.now().toString();
       await dbhospital.add({
         'hospitalname': name,
-        'hospitalnumber': '+977${number}',
+        'hospitalnumber': number,
         'hospitaldetailsid': hospitaldetailsid
       });
       return 'success';

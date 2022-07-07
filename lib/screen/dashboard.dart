@@ -79,10 +79,10 @@ class _dashboardState extends State<dashboard> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    Get.to(() => AddFaq(),
-                                        transition: Transition.downToUp);
-                                  });
+                                  // setState(() {
+                                  //   Get.to(() => AddFaq(),
+                                  //       transition: Transition.downToUp);
+                                  // });
                                 },
                                 child: Card(
                                   elevation: 5,
