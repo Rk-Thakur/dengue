@@ -1,16 +1,16 @@
-# dengue
+# Dengue
 
-A new Flutter project.
+A dengue app design with the help of Provider State Management (RiverPod).
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Dengue is built in order to aware about the dengue and also to collect the data of risk area of dengue. It also provide the knowledge about prvention from the dengue . It also has the notification system to notify every people to clean the place around them. Has also the Google map implementation to get the exact location to find the dengue risky area.
 
-A few resources to get you started if this is your first Flutter project:
+## ScreenShots:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![alt text](assets/images/first.jpg)
+![alt text](assets/images/second.jpg)
+![alt text](assets/images/third.jpg)
+![alt text](assets/images/fourth.jpg)
+![alt text](assets/images/sixth.jpg)
+![alt text](assets/images/seventh.jpg)
