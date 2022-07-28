@@ -1,6 +1,7 @@
 import 'package:dengue/screen/addpost.dart';
 import 'package:dengue/screen/alarm.dart';
 import 'package:dengue/screen/hospital.dart';
+import 'package:dengue/screen/reported.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -113,7 +114,10 @@ class _adminState extends State<admin> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Get.to(() => reportcase(),
+                                transition: Transition.downToUp);
+                          },
                           child: Card(
                             elevation: 5,
                             child: Container(

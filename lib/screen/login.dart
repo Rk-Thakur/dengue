@@ -253,11 +253,11 @@ class login_screen extends StatelessWidget {
                                       password: passController.text.trim());
                               if (response != 'success') {
                                 ref.read(loadingProvider.notifier).toogle();
-                                Get.showSnackbar(GetSnackBar(
-                                  title: 'Got some error',
-                                  duration: Duration(seconds: 1),
-                                  message: 'Please Confirm Your Id Password',
-                                ));
+                                // Get.showSnackbar(GetSnackBar(
+                                //   title: 'Got some error',
+                                //   duration: Duration(seconds: 1),
+                                //   message: 'Please Confirm Your Id Password',
+                                // ));
                               }
                             } else {
                               if (db.image == null) {

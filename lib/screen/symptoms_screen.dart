@@ -603,7 +603,13 @@ class _symptoms_screenState extends State<symptoms_screen> {
                 height: 15,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  if (fever == 'Yes' && headache == 'Yes' && eyepain == 'Yes') {
+                    print('u have fever,headache, eyepain');
+                  } else {
+                    print('no fever');
+                  }
+                },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.09,

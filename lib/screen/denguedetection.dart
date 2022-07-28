@@ -155,7 +155,7 @@ class denguedetectionState extends State<denguedetection> {
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                          "Video",
+                          "Photo",
                           style: TextStyle(
                             fontSize: 20,
                             letterSpacing: 2,
@@ -276,32 +276,44 @@ class denguedetectionState extends State<denguedetection> {
                                 backgroundColor: MaterialStateProperty.all(
                                     Color(0xffE26A2C))),
                             onPressed: () async {
-                              // _form.currentState!.save();
-                              // FocusScope.of(context).unfocus();
-                              // if (_form.currentState!.validate()) {
-                              //   final response = ref
-                              //       .watch(crudProvider)
-                              //       .addDetectionArea(
-                              //           lat: widget.lat,
-                              //           long: widget.long,
-                              //           image1: db.image!,
-                              //           image2: db.image1!,
-                              //           image3: db.image2!,
-                              //           description:
-                              //               descriptionController.text.trim());
-                              //   if (response == 'success') {
-                              //     Navigator.pop(context);
-                              //   }
-                              // }
+                              _form.currentState!.save();
+                              FocusScope.of(context).unfocus();
+                              if (_form.currentState!.validate()) {
+                                final response = ref
+                                    .watch(crudProvider)
+                                    .addDetectionArea(
+                                        lat: widget.lat,
+                                        long: widget.long,
+                                        image: db.image!,
+                                        description:
+                                            descriptionController.text.trim());
+                                if (response == 'success') {
+                                  print('send done');
+                                  Navigator.pop(context);
+                                }
+                              }
                             },
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
+                            child: isLoading
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Is Loading Please Wait!!',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    ],
+                                  )
+                                : Text(
+                                    "Submit",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ),
                           )),
                     ),
                     SizedBox(

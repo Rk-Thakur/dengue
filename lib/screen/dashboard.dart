@@ -2,7 +2,9 @@ import 'package:dengue/model/user.dart';
 import 'package:dengue/provider/authprovider.dart';
 import 'package:dengue/screen/addfaq.dart';
 import 'package:dengue/screen/addpost.dart';
+import 'package:dengue/screen/communitychat.dart';
 import 'package:dengue/screen/faq.dart';
+import 'package:dengue/screen/listofnews.dart';
 import 'package:dengue/screen/pickvideo.dart';
 import 'package:dengue/screen/symptoms_screen.dart';
 import 'package:flutter/material.dart';
@@ -40,16 +42,31 @@ class _dashboardState extends State<dashboard> {
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 15, left: 15, bottom: 0, right: 15),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Events & Campaign',
-                        style: TextStyle(
-                          fontSize: 20,
-                          letterSpacing: 2,
-                          fontWeight: FontWeight.w400,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Events & Campaign',
+                            style: TextStyle(
+                              fontSize: 20,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
-                      ),
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => CommunityChat(),
+                                transition: Transition.rightToLeftWithFade);
+                          },
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Icon(Icons.message),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
@@ -132,7 +149,7 @@ class _dashboardState extends State<dashboard> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Nearby Hospitals',
+                        'Hospitals',
                         style: TextStyle(
                           fontSize: 20,
                           letterSpacing: 2,
@@ -358,7 +375,7 @@ class _dashboardState extends State<dashboard> {
                         ),
                         InkWell(
                           onTap: () => Get.to(
-                            () => faq_section(),
+                            () => listofnews(),
                             transition: Transition.downToUp,
                           ),
                           child: Card(
@@ -367,7 +384,7 @@ class _dashboardState extends State<dashboard> {
                               height: 120,
                               width: 140,
                               child: Lottie.asset(
-                                'assets/images/faq.json',
+                                'assets/images/news.json',
                                 fit: BoxFit.contain,
                               ),
                               decoration: BoxDecoration(

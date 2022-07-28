@@ -52,6 +52,7 @@ class _main_ScreenState extends State<main_Screen> {
 
               print(placemarks);
               Placemark place = placemarks[0];
+
               // String address = '${place.locality}/${place.subLocality}';
               Get.to(
                 () => denguedetection(response.latitude, response.longitude,

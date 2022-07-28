@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dengue/model/faq.dart';
 import 'package:dengue/model/hospital.dart';
+import 'package:dengue/model/location.dart';
+import 'package:dengue/model/message.dart';
 import 'package:dengue/model/post.dart';
 import 'package:dengue/screen/hospital.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,6 +15,10 @@ final crudProvider = Provider.autoDispose((ref) => CrudProvider());
 final hospitalProvider =
     StreamProvider.autoDispose((ref) => CrudProvider().getHospital());
 final postProvider = StreamProvider((ref) => CrudProvider().getData());
+final chatProvider =
+    StreamProvider.autoDispose((ref) => CrudProvider().getMessage());
+final locationProvider =
+    StreamProvider.autoDispose((ref) => CrudProvider().getlocation());
 
 class CrudProvider {
   CollectionReference dbpost = FirebaseFirestore.instance.collection('post');
@@ -22,7 +28,7 @@ class CrudProvider {
   CollectionReference dbhospital =
       FirebaseFirestore.instance.collection('hospital');
   CollectionReference dbAlarm = FirebaseFirestore.instance.collection('Alarm');
-
+  CollectionReference dbchat = FirebaseFirestore.instance.collection('chats');
   //hospital section
   Future<String> addhospitaldetails(
       {required String name, required int number}) async {
@@ -185,35 +191,24 @@ class CrudProvider {
   Future<String> addDetectionArea(
       {required double lat,
       required double long,
-      required XFile image1,
-      required XFile image2,
-      required XFile image3,
+      required XFile image,
       required String description}) async {
     try {
       final imageId = DateTime.now().toString();
       final detectionId = DateTime.now().toString();
       final ref =
           FirebaseStorage.instance.ref().child('detectionImage/$imageId');
-      final ref1 =
-          FirebaseStorage.instance.ref().child('detectionImage/$imageId');
-      final ref2 =
-          FirebaseStorage.instance.ref().child('detectionImage/$imageId');
-      final image1file = File(image1.path);
-      final image2file = File(image2.path);
-      final image3file = File(image3.path);
+
+      final image1file = File(image.path);
+
       await ref.putFile(image1file);
-      await ref1.putFile(image2file);
-      await ref2.putFile(image3file);
 
       final url = await ref.getDownloadURL();
-      final url1 = await ref1.getDownloadURL();
-      final url2 = await ref2.getDownloadURL();
+
       await dbdetection.add({
         'lat': lat,
         'long': long,
-        'image1': url,
-        'image2': url1,
-        'image3': url2,
+        'image': url,
         'description': description,
         'detectionId': detectionId
       });
@@ -222,5 +217,76 @@ class CrudProvider {
       print(e);
       return '${e.message}';
     }
+  }
+
+  Future<String> add_message([
+    String message = '',
+    String userId = '',
+    String profilepicture = '',
+    String username = '',
+    XFile? postimage,
+  ]) async {
+    // {required String text,
+    // required String userId,
+    // required String userImage,
+    // required String username}) async {
+    try {
+      String imageId = '';
+      String url = '';
+      if (postimage != null) {
+        imageId = DateTime.now().toString();
+        final ref = FirebaseStorage.instance.ref().child('postchat/$imageId');
+        final imageFile = File(postimage.path);
+        await ref.putFile(imageFile);
+        url = await ref.getDownloadURL();
+      }
+
+      await dbchat.add({
+        'message': message,
+        'userId': userId,
+        'profilepicture': profilepicture,
+        'username': username,
+        'createdAt': Timestamp.now(),
+        'postimage': url,
+      });
+      return 'success';
+    } on FirebaseException catch (e) {
+      return '${e.message}';
+    }
+  }
+
+  Stream<List<message>> getMessage() {
+    return dbchat
+        .orderBy('createdAt', descending: false)
+        .snapshots()
+        .map((event) => getMessageData(event));
+  }
+
+  List<message> getMessageData(QuerySnapshot querySnapshot) {
+    return querySnapshot.docs.map((e) {
+      final json = e.data() as Map<String, dynamic>;
+      return message(
+          json['message'] ?? 'not text',
+          json['profilepicture'] ?? 'not availabel',
+          json['postimage'] ?? 'not available',
+          json['userId'] ?? 'not available',
+          json['username'] ?? 'not available');
+    }).toList();
+  }
+
+  Stream<List<location>> getlocation() {
+    return dbdetection.snapshots().map((event) => getLocation(event));
+  }
+
+  List<location> getLocation(QuerySnapshot querySnapshot) {
+    return querySnapshot.docs.map((e) {
+      final json = e.data() as Map<String, dynamic>;
+      return location(
+          detection_id: json['detection_id'] ?? 'not null',
+          description: json['description'] ?? 'not null',
+          image: json['image'] ?? 'not null',
+          lat: json['lat'] ?? 'not null',
+          long: json['long'] ?? 'not null');
+    }).toList();
   }
 }
