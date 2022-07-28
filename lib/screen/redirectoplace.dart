@@ -60,7 +60,7 @@ class _redirectpageState extends State<redirectpage> {
 
   _getPolyline() async {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        'AIzaSyCx7g7W9UfYj5tA5DYuWq9d6asEFLGpXQw',
+        'api key',
         PointLatLng(widget.lat, widget.long),
         PointLatLng(widget.destination_lat, widget.destination_long),
         travelMode: TravelMode.driving);
