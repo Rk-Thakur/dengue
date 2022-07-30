@@ -5,7 +5,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dengue/provider/crudprovider.dart';
 import 'package:dengue/provider/image_provider.dart';
 import 'package:dengue/provider/loginprovider.dart';
-import 'package:dengue/screen/redirectoplace.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,19 +15,14 @@ import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 class reportcase extends StatefulWidget {
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
   @override
   State<reportcase> createState() => _reportcaseState();
 }
 
 class _reportcaseState extends State<reportcase> {
-  LocationPermission? locationPermission;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -100,40 +94,17 @@ class _reportcaseState extends State<reportcase> {
                                     ),
                                     InkWell(
                                       onTap: () async {
-                                        locationPermission = await Geolocator
-                                            .requestPermission();
-                                        if (locationPermission ==
-                                            LocationPermission.denied) {
-                                          locationPermission = await Geolocator
-                                              .requestPermission();
-                                        } else if (locationPermission ==
-                                            LocationPermission.deniedForever) {
-                                          await Geolocator.openAppSettings();
-                                        }
-                                        if (locationPermission ==
-                                                LocationPermission.whileInUse ||
-                                            locationPermission ==
-                                                LocationPermission.always) {
-                                          final response = await Geolocator
-                                              .getCurrentPosition();
-                                          List<Placemark> placemarks =
-                                              await placemarkFromCoordinates(
-                                                  response.latitude,
-                                                  response.longitude);
+                                        final availableMap =
+                                            await MapLauncher.installedMaps;
+                                        print(availableMap);
+                                        // await availableMap.first.showMarker(
+                                        //     coords: Coords(response.latitude,
+                                        //         response.longitude),
+                                        //     title: 'response.lon');
 
-                                          print(placemarks);
-                                          Placemark place = placemarks[0];
-
-                                          // String address = '${place.locality}/${place.subLocality}';
-                                          Get.to(
-                                              () => redirectpage(
-                                                  response.latitude,
-                                                  response.longitude,
-                                                  dat.lat,
-                                                  dat.long),
-                                              transition:
-                                                  Transition.cupertinoDialog);
-                                        }
+                                        await availableMap.first.showDirections(
+                                            destination:
+                                                Coords(dat.lat, dat.long));
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
