@@ -204,6 +204,7 @@ class CommunityChat extends StatelessWidget {
 
                                           textController.clear();
                                           db.image == null;
+                                          // Navigator.pop(context);
                                         }
                                       },
                                       icon: Icon(Icons.send)),
