@@ -264,7 +264,8 @@ void notify() async {
         body: 'Did u clean ur place??',
       ),
       schedule: NotificationInterval(
-        interval: 5, //second
-        timeZone: timezon,
-      )); //repeats:true time interval must be at least 60 if repeating
+          interval: 60, //second
+          timeZone: timezon,
+          repeats:
+              true)); //repeats:true time interval must be at least 60 if repeating
 }
