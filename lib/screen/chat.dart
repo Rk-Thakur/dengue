@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dengue/provider/authprovider.dart';
@@ -178,16 +180,22 @@ class _SeettingState extends State<Seetting> {
                                               print(isSwitched);
 
                                               //Notifications
-                                              if (isSwitched == true) notify();
-
-                                              if (isSwitched == true)
-                                                Get.showSnackbar(GetSnackBar(
-                                                  title: "Notification ",
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                  message:
-                                                      'Notification Set for Cleaning Place',
-                                                ));
+                                              // isSwitched == true
+                                              //     ? notify()
+                                              //     : null;
+                                              if (isSwitched == true) {
+                                                notify();
+                                              }
+                                              isSwitched == true
+                                                  ? Get.showSnackbar(
+                                                      GetSnackBar(
+                                                      title: "Notification ",
+                                                      duration:
+                                                          Duration(seconds: 2),
+                                                      message:
+                                                          'Notification Set for Cleaning Place',
+                                                    ))
+                                                  : null;
                                             });
                                           },
                                           activeTrackColor: Color(0xffE26A2C),
@@ -253,6 +261,13 @@ class _SeettingState extends State<Seetting> {
       })),
     );
   }
+
+  void didChangedAppLifeCycleState(AppLifecycleState state) {
+    var appInBackgroud = (state == AppLifecycleState.inactive);
+    if (appInBackgroud) {
+      notify();
+    }
+  }
 }
 
 void notify() async {
@@ -264,8 +279,8 @@ void notify() async {
         body: 'Did u clean ur place??',
       ),
       schedule: NotificationInterval(
-          interval: 60, //second
-          timeZone: timezon,
-          repeats:
-              true)); //repeats:true time interval must be at least 60 if repeating
+        interval: 10, //second
+        timeZone: timezon,
+        // repeats:isSwitched
+      )); //repeats:true time interval must be at least 60 if repeating
 }
