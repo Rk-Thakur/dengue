@@ -73,7 +73,7 @@ class CrudProvider {
 //alarm section
   Future<String> addalarm(
       {required XFile image,
-      required int time,
+      required int time, 
       required String details}) async {
     try {
       final imageId = DateTime.now().toString();

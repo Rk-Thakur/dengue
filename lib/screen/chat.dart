@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dengue/provider/authprovider.dart';
@@ -279,8 +277,8 @@ void notify() async {
         body: 'Did u clean ur place??',
       ),
       schedule: NotificationInterval(
-        interval: 10, //second
-        timeZone: timezon,
-        // repeats:isSwitched
-      )); //repeats:true time interval must be at least 60 if repeating
+          interval: 60, //second
+          timeZone: timezon,
+          repeats:
+              true)); //repeats:true time interval must be at least 60 if repeating
 }
